@@ -1,39 +1,9 @@
 """
+What is this script:
+--------------------
     implementation of data augmentation used in AlexNet and VGG regarding:
         1. random cropping --> `random_crop_batch`
         2. PCA whitening  --> `pca_augment`
-
-    How to use with keras data genrator:
-    ------------------------------------
-    Because keras does not provide the two data augmentations mentioned above,
-    we create functions to do so separately once the generator is defined. It is
-    not the ideal way because now we have data augmentations going on in two different
-    places but it's easy to plug in and go without messing around with keras' native
-    setting.
-
-    e.g. Having defined:
-        datagen_train = ImageDataGenerator(
-                                            fill_mode='nearest',
-                                            horizontal_flip=True,
-                                            rescale=None,
-                                            preprocessing_function=preprocess_input,
-                                            data_format="channels_last",
-                                            validation_split=0.1
-                                            )
-
-        train_generator = datagen_train.flow_from_directory(
-                                                    directory=your_directory,
-                                                    batch_size=batch_size,
-                                                    seed=42,
-                                                    shuffle=True,
-                                                    class_mode="sparse",
-                                                    classes=classes,
-                                                    subset='training',
-                                                    target_size=(256, 256),
-                                                    )
-
-        # add extra augmentation (i.e. random cropping and PCA whitening)
-        new_train_generator = crop_and_pca_generator(train_generator, crop_length=224)
 """
 import numpy as np
 

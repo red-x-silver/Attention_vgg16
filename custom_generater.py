@@ -1,3 +1,10 @@
+"""
+What is this script:
+--------------------
+    create a custom generator on top of existing keras data augmentation functionalities
+    such as random cropping and PCA whitening (details see `random_crop_n_pca_augment.py`)
+    and correct generator indices (details see `labels_corrector.py`)
+"""
 import numpy as np
 import pandas as pd
 
@@ -9,25 +16,14 @@ from labels_corrector import wnids_to_network_indices, indices_rematch
 from random_crop_n_pca_augment import crop_and_pca_generator
 
 
-imagenet_train = '/mnt/fast-data17/datasets/ILSVRC/2012/clsloc/train/'
-imagenet_test = '/mnt/fast-data17/datasets/ILSVRC/2012/clsloc/val/'
-
-ImageGen = ImageDataGenerator(fill_mode='nearest',
-                                horizontal_flip=True,
-                                rescale=None,
-                                preprocessing_function=preprocess_input,
-                                data_format="channels_last",
-                                validation_split=0.1
-                                )
-
 def create_good_generator(ImageGen,
                            directory,
                            batch_size=256,
                            seed=42,
                            shuffle=True,
                            class_mode='sparse',
-                           classes=None,  # a subset of wordnet ids
-                           subset=None,
+                           classes=None,  # a list of wordnet ids
+                           subset=None,  # specify training or validation set when needed
                            target_size=(256, 256),
                            AlextNetAug=True):
     """
@@ -46,9 +42,9 @@ def create_good_generator(ImageGen,
 
     Example:
     --------
-    Say you want to train model on categories ['dog', 'cat', 'ball'] which have
-    wordnet ids ['n142', 'n99', 'n200'] and their real indices on VGG's output layer
-    are [234, 101, 400]. The function works as follows:
+        Say you want to train model on categories ['dog', 'cat', 'ball'] which have
+        wordnet ids ['n142', 'n99', 'n200'] and their real indices on VGG's output layer
+        are [234, 101, 400]. The function works as follows:
 
             1. You pass in classes=['n142', 'n99', 'n200']
             2. classes will be sorted as ['n99', 'n142', 'n200']
@@ -60,11 +56,11 @@ def create_good_generator(ImageGen,
     '''
     # why sort classes?
     -------------------
-    sort wordnet ids alphabatically (may not be necessary)
-    if sorted, keras will label the smallest wordnet id as class 0, so on.
-    and in the future when we need to replace class 0 with the actual network
-    index, class 0 will be replaced with the smallest network index as it should
-    be in sync with wordnet ids which are sorted in the first place.
+        sort wordnet ids alphabatically (may not be necessary)
+        if sorted, keras will label the smallest wordnet id as class 0, so on.
+        and in the future when we need to replace class 0 with the actual network
+        index, class 0 will be replaced with the smallest network index as it should
+        be in sync with wordnet ids which are sorted in the first place.
     '''
     sorted_classes = sorted(classes)
 
@@ -102,6 +98,19 @@ def create_good_generator(ImageGen,
 
 
 if __name__ == '__main__':
+    """
+        e.g. create a training generator
+    imagenet_train = '/mnt/fast-data17/datasets/ILSVRC/2012/clsloc/train/'
+    ImageGen = ImageDataGenerator(fill_mode='nearest',
+                                    horizontal_flip=True,
+                                    rescale=None,
+                                    preprocessing_function=preprocess_input,
+                                    data_format="channels_last",
+                                    validation_split=0.1
+                                    )
+
     df_classes = pd.read_csv('groupings-csv/felidae_Imagenet.csv', usecols=['wnid'])
     classes = sorted([i for i in df_classes['wnid']])
     good_generator, steps = create_good_generator(ImageGen, imagenet_train, classes=classes)
+    """
+    pass
