@@ -1,0 +1,14 @@
+idx,description,wnid,base_accuracy
+281,tabby,n02123045,0.54
+282,tiger_cat,n02123159,0.28
+283,Persian_cat,n02123394,0.74
+284,Siamese_cat,n02123597,0.94
+285,Egyptian_cat,n02124075,0.46
+286,cougar,n02125311,0.74
+287,lynx,n02127052,0.6
+288,leopard,n02128385,0.8
+289,snow_leopard,n02128757,0.84
+290,jaguar,n02128925,0.62
+291,lion,n02129165,0.84
+292,tiger,n02129604,0.9
+293,cheetah,n02130308,0.92
