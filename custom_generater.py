@@ -29,7 +29,33 @@ def create_good_generator(ImageGen,
                            classes=None,  # a subset of wordnet ids
                            subset=None,
                            target_size=(256, 256),
-                           AlextNetAug=False):
+                           AlextNetAug=True):
+    """
+    usage:
+    ------
+        given a generator with pre-defined data augmentations and preprocessing,
+        this function will swap the labels that are inferred by keras by the classes(wordnet ids)
+        you pass in to the true indices that match VGG's output layer. And if AlextNetAug=True,
+        extra data augmentations mentioned in both Alexnet and VGG paper will be used on the
+        given dataset.
+
+    return:
+    -------
+        - a generator which can be used in fitting
+        - steps that is required when evaluating
+
+    Example:
+    --------
+    Say you want to train model on categories ['dog', 'cat', 'ball'] which have
+    wordnet ids ['n142', 'n99', 'n200'] and their real indices on VGG's output layer
+    are [234, 101, 400]. The function works as follows:
+
+            1. You pass in classes=['n142', 'n99', 'n200']
+            2. classes will be sorted as ['n99', 'n142', 'n200']
+            3. keras auto-label them as [0, 1, 2]
+            4. `index_correct_generator` will relabel three categories as [101, 234, 400]
+            5. use extra Alexnet augmentation if specified.
+    """
 
     '''
     # why sort classes?
