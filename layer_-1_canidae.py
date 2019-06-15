@@ -104,6 +104,7 @@ model.fit_generator(
         good_train_generator,
         steps_per_epoch=steps,
         epochs=num_epochs,
+        verbose = 0, 
         callbacks = callbacks, 
         validation_data=good_validation_generator, 
         validation_steps=20
