@@ -75,7 +75,7 @@ def create_good_generator(ImageGen,
                                                  target_size=target_size
                                                  )
     # number of steps go through the dataset is a required parameter later
-    steps = np.ceil(len(bad_generator.classes) / batch_size)
+    steps = bad_generator.n//bad_generator.batch_size
 
     # label correction
     if classes == None:
