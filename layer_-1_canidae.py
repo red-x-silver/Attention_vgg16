@@ -29,7 +29,7 @@ import h5py
 import random
 import math
 
-from CSML_attention_project_pieces import *
+from custom_generator import create_good_generator
 
 #Magic numbers
 num_epochs = 100
@@ -101,9 +101,9 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=2, verbose = 1),
              ModelCheckpoint(filepath='layer1-canidae-model.h5', monitor='val_loss', save_best_only=True)]
 
 model.fit_generator(
-        train_generator,
+        good_train_generator,
         steps_per_epoch=steps,
         epochs=num_epochs,
         callbacks = callbacks, 
-        validation_data=validation_generator, 
+        validation_data=good_validation_generator, 
         validation_steps=steps_val)
