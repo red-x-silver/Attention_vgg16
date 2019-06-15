@@ -106,4 +106,4 @@ model.fit_generator(
         epochs=num_epochs,
         callbacks = callbacks, 
         validation_data=good_validation_generator, 
-        validation_steps=steps_val)
+        #validation_steps=steps_val)
