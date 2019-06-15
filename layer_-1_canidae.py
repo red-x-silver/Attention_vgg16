@@ -100,12 +100,11 @@ model.summary()
 callbacks = [EarlyStopping(monitor='val_loss', patience=2, verbose = 1),
              ModelCheckpoint(filepath='layer1-canidae-model.h5', monitor='val_loss', save_best_only=True)]
 
-step_size_validation=good_validation_generator.n//good_validation_generator.batch_size
 model.fit_generator(
         good_train_generator,
         steps_per_epoch=steps,
         epochs=num_epochs,
         callbacks = callbacks, 
         validation_data=good_validation_generator, 
-        validation_steps=step_size_validation
+        validation_steps=steps_val
         )
