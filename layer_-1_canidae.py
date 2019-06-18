@@ -107,5 +107,5 @@ model.fit_generator(
         verbose = 1, 
         callbacks = callbacks, 
         validation_data=good_validation_generator, 
-        validation_steps=steps_val
+        validation_steps=20
         )
