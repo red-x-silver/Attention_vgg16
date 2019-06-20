@@ -90,7 +90,7 @@ x = Flatten()(x)
 preds = vgg16_model.layers[-1](x)
 model = Model(vgg16_model.input, preds)
 
-model.compile(loss='categorical_crossentropy', 
+model.compile(loss='sparse_categorical_crossentropy', 
               optimizer='adam', 
               metrics=['accuracy'])
 
@@ -107,5 +107,5 @@ model.fit_generator(
         verbose = 1, 
         callbacks = callbacks, 
         validation_data=good_validation_generator, 
-        validation_steps=20
+        validation_steps=steps_val
         )
