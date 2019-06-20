@@ -40,7 +40,7 @@ flatten_shape = 1000
 
 # Forked from Ken's codes
 
-imagenet_train = '/mnt/fast-data17/datasets/ILSVRC/2012/clsloc/train/'
+imagenet_train = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/train/'
 ImageGen = ImageDataGenerator(fill_mode='nearest',
                               horizontal_flip=True,
                               rescale=None,
