@@ -62,7 +62,10 @@ def create_good_generator(ImageGen,
         index, class 0 will be replaced with the smallest network index as it should
         be in sync with wordnet ids which are sorted in the first place.
     '''
-    sorted_classes = sorted(classes)
+    if classes == None:
+        pass
+    else:
+        sorted_classes = sorted(classes)
 
     # the initial generator
     bad_generator = ImageGen.flow_from_directory(directory=directory,
@@ -79,8 +82,12 @@ def create_good_generator(ImageGen,
 
     # label correction
     if classes == None:
-        # TODO: when pass in all 1000 categories
-        pass
+        # when use all 1000 categories, there is no need to rematch
+        # keras-auto labelled indices to the real network indices
+        # because keras labels all categories in the order of wnids which is
+        # the same as network indices
+        # so the bad_generator is already index correct!
+        index_correct_generator = bad_generator
     else:
         # Sanity check: network_indices are also sorted in ascending order
         network_indices = wnids_to_network_indices(sorted_classes)
