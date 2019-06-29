@@ -36,7 +36,7 @@ classes = sorted([i for i in df_classes['wnid']])
 train_generator, train_steps = create_good_generator(ImageGen_train,
                                                      imagenet_train,
                                                      classes=classes,
-                                                     subset='train')
+                                                     subset='training')
 
 val_generator, val_steps = create_good_generator(ImageGen_val,
                                                  imagenet_train,  # train not val
@@ -56,4 +56,3 @@ model.fit_generator(train_generator,
                     max_queue_size=40,
                     workers=14,
                     use_multiprocessing=True)
-
