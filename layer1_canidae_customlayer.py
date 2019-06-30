@@ -30,7 +30,7 @@ import h5py
 import random
 import math
 
-from CSML_attention_project_pieces import *
+from custom_generator import create_good_generator
 
 #Magic numbers
 num_epochs = 100
