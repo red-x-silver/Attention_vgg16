@@ -121,7 +121,7 @@ for layer in vgg16_model.layers[-1:]:
 
 model = Model(vgg16_model.input, x)
 
-model.compile(loss='categorical_crossentropy', 
+model.compile(loss='sparse_categorical_crossentropy', 
               optimizer='adam', 
               metrics=['accuracy'])
 
@@ -129,12 +129,14 @@ model.summary()
 
 #Callbacks
 callbacks = [EarlyStopping(monitor='val_loss', patience=2, verbose = 1),
-             ModelCheckpoint(filepath='layer1-canidae-model-CustomLayer.h5', monitor='val_loss', save_best_only=True)]
+             ModelCheckpoint(filepath='layer1-canidae-model.h5', monitor='val_loss', save_best_only=True)]
 
 model.fit_generator(
-        train_generator,
+        good_train_generator,
         steps_per_epoch=steps,
         epochs=num_epochs,
+        verbose = 1, 
         callbacks = callbacks, 
-        validation_data=validation_generator, 
-        validation_steps=steps_val)
+        validation_data=good_validation_generator, 
+        validation_steps=steps_val
+        )
