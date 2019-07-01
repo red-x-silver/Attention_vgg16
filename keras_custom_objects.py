@@ -111,43 +111,9 @@ class RelativeEarlyStopping(Callback):
         return monitor_value
 
 
+class CustomModel(Model):  # Ken: e.g. model = CustomModel(inputs=vgg16.input, outputs=vgg16.output)
 
-class Clip(Constraint):
-    """
-        custom constraint: limites w into [0, 1] or [epsilon, +inf]
-    """
-    def __call__(self, w):
-        w *= K.cast(K.greater_equal(w, K.epsilon()), K.floatx())
-        return w
-
-
-class FilterAvg(Constraint):
-    """
-        custom constraint: replace ws with avg w over filters
-        -----------------------------------------------------
-        NOT WORKING - do it in __build__ instead
-    """
-    def __call__(self, w):
-
-        # clip first
-        w *= K.cast(K.greater_equal(w, K.epsilon()), K.floatx())
-        # w *= K.cast(K.less_equal(w, 1.), K.floatx())
-
-        # TODO: reshape into sizes based on incoming w size
-        w = K.reshape(w, (14, 14, 512))
-
-        temp = K.mean(w, axis=0)
-        avg = K.reshape(K.mean(temp, axis=0), (512, 1, 1))
-
-        w_desired = K.tile(avg, [1, 14, 14])
-        w = K.permute_dimensions(w_desired, (2, 1, 0))
-        print(w.shape)
-        #
-        return K.flatten(w)
-
-
-class CustomModel(Model):  # e.g. new_model = CustomModel(inputs=x, outputs=y)
-
+    # Ken: this fitting function will not be using use_multiprocessing for validation set
     def fit_generator_custom(model,
                               generator,
                               steps_per_epoch=None,
@@ -163,7 +129,7 @@ class CustomModel(Model):  # e.g. new_model = CustomModel(inputs=x, outputs=y)
                               shuffle=True,
                               initial_epoch=0):
         """See docstring for `Model.fit_generator`."""
-        
+
         wait_time = 0.01  # in seconds
         epoch = initial_epoch
 
@@ -358,7 +324,8 @@ class CustomModel(Model):  # e.g. new_model = CustomModel(inputs=x, outputs=y)
                         if val_gen:
 
 
-
+                            # Ken: the custom evaluate function will weight validation examples the
+                            # same way that training examples are weighted
                             ###############################################
                             val_outs = model.evaluate_generator_custom(
                                 val_enqueuer_gen,
@@ -483,7 +450,7 @@ class CustomModel(Model):  # e.g. new_model = CustomModel(inputs=x, outputs=y)
                                      str(generator_output))
 
 
-
+                # Ken: to weight validation examples, testing must re-weight the examples
                 ###############################################################
                 outs = model.test_on_batch_custom(x, y, sample_weight=sample_weight, class_weight=class_weight)
                 ###############################################################
@@ -530,6 +497,7 @@ class CustomModel(Model):  # e.g. new_model = CustomModel(inputs=x, outputs=y)
 
 
 
+    # Ken: a custom test function which has one extra parameter `class_weight`
     ############################################################################
     def test_on_batch_custom(self, x, y, sample_weight=None, class_weight=None):
         """
@@ -540,7 +508,7 @@ class CustomModel(Model):  # e.g. new_model = CustomModel(inputs=x, outputs=y)
             x, y,
             sample_weight=sample_weight,
             class_weight=class_weight)
-        
+
         if self._uses_dynamic_learning_phase():
             ins = x + y + sample_weights + [0.]
         else:
