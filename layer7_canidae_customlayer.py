@@ -128,7 +128,7 @@ model.summary()
 
 #Callbacks
 callbacks = [EarlyStopping(monitor='val_loss', patience=2, verbose = 1),
-             ModelCheckpoint(filepath='layer1-canidae-model.h5', monitor='val_loss', save_best_only=True)]
+             ModelCheckpoint(filepath='layer7-canidae-model.h5', monitor='val_loss', save_best_only=True)]
 
 model.fit_generator(
         good_train_generator,
