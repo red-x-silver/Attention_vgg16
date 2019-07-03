@@ -141,7 +141,7 @@ for layer_index in [6, 10, 14, 18, 20]:
                 optimizer='adam', 
                 metrics=['accuracy'])
   
-  print('This model is going to be saved in: ' + 'file_name')
+  print('This model is going to be saved in: ' + file_name)
   
   
   
