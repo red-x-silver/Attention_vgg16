@@ -119,8 +119,8 @@ def get_ATT_model(layer_index, frozen_model = vgg16_model):
   between frozen_model.layers[layer_index] and frozen_model.layers[layer_index+1]
   '''
   
-  last = frozen_model[layer_index]
-  
+  last = frozen_model.layers[layer_index].output
+
   x = SinglyConnected(kernel_constraint= CustomConstraint())(last)
   
   for layer in frozen_model.layers[layer_index+1:]:
