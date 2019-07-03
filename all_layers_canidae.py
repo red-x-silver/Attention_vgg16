@@ -113,12 +113,12 @@ vgg16_model = VGG16(weights = 'imagenet', include_top=True, input_shape = (img_r
 for layer in vgg16_model.layers:
     layer.trainable = False
 
-def get_ATT_model(layer_index, frozen_model = vgg16_model):
+def get_ATT_model(layer_index):
   '''
   The function is to insert an attention layer 
   between frozen_model.layers[layer_index] and frozen_model.layers[layer_index+1]
   '''
-  
+  frozen_model = VGG16(weights = 'imagenet', include_top=True, input_shape = (img_rows, img_cols, 3))
   last = frozen_model.layers[layer_index].output
 
   x = SinglyConnected(kernel_constraint= CustomConstraint())(last)
@@ -134,9 +134,11 @@ def get_ATT_model(layer_index, frozen_model = vgg16_model):
 
   return model, model_file_name
 
-for layer_index in [6, 10, 14, 18, 20]:
+layer_indice = [10, 14, 18, 20]
 
-  model, file_name = get_ATT_model(layer_index, frozen_model = vgg16_model)
+for layer_index in layer_indice:
+
+  model, file_name = get_ATT_model(layer_index)
   model.compile(loss='sparse_categorical_crossentropy', 
                 optimizer='adam', 
                 metrics=['accuracy'])
