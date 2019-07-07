@@ -105,12 +105,6 @@ class SinglyConnected(Layer):
     def compute_output_shape(self, input_shape):
         return (input_shape)
 
-#Build the model
-vgg16_model = VGG16(weights = 'imagenet', include_top=True, input_shape = (img_rows, img_cols, 3))
-
-for layer in vgg16_model.layers:
-    layer.trainable = False
-
 def get_ATT_model(layer_index):
     '''
         The function is to insert an attention layer
@@ -118,8 +112,8 @@ def get_ATT_model(layer_index):
         frozen_model is set to be VGG16.
         '''
     frozen_model = VGG16(weights = 'imagenet', include_top=True, input_shape = (img_rows, img_cols, 3))
-        for layer in frozen_model.layers:
-            layer.trainable = False
+    for layer in frozen_model.layers:
+        layer.trainable = False
     
     
     last = frozen_model.layers[layer_index].output
