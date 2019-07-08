@@ -131,8 +131,8 @@ def get_ATT_model(layer_index):
                     
     return model, model_file_name
 
-layer_indice = [3, 6, 10, 14, 18, 20, 21]
-
+#layer_indice = [3, 6, 10, 14, 18, 20, 21]
+layer_indice = [6, 10, 14, 18, 20, 21]
 for layer_index in layer_indice:
     
     model, file_name = get_ATT_model(layer_index)
