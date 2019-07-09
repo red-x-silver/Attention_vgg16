@@ -30,10 +30,40 @@ bs = 64
 img_rows = 224
 img_cols = 224
 
+class SinglyConnected(Layer):
+    def __init__(self,
+                 kernel_constraint=None,
+                 **kwargs):
+        self.kernel_constraint = kernel_constraint
+        super(SinglyConnected, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        if input_shape[-1] is None:
+            raise ValueError('Axis ' +  + ' of '
+                             'input tensor should have a defined dimension '
+                             'but the layer received an input with shape ' +
+                             str(input_shape) + '.')
+        #self.input_spec = InputSpec(ndim=len(input_shape),
+         #                           axes=dict(list(enumerate(input_shape[1:], start=1))))
+        
+        self.kernel = self.add_weight(name='kernel', 
+                                      shape=input_shape[1:],
+                                      initializer='uniform',
+                                      constraint=self.kernel_constraint,
+                                      trainable=True)
+        super(SinglyConnected, self).build(input_shape)  # Be sure to call this at the end
+
+    def call(self, x):
+        return np.multiply(x,self.kernel)
+
+    def compute_output_shape(self, input_shape):
+        return (input_shape)
+
+
 model_file = 'canidae/'
 model1_name = os.listdir(model_file)[0]
 print ('using model: ' + model_file+model1_name)
-model = load_model(model_file+model1_name)
+model = load_model(model_file+model1_name, custom_objects={'SinglyConnected': SinglyConnected})
 
 
 
