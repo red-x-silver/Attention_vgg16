@@ -16,10 +16,13 @@ matplotlib.use("Agg")
 import keras
 from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
-from keras.layers import Dense, Flatten, LocallyConnected1D, Reshape
+from keras.layers import Dense, Flatten, LocallyConnected1D, LocallyConnected2D, Reshape, Concatenate, Lambda
 from keras import optimizers
 from keras.models import Sequential, Model
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras import backend as K
+from keras.layers import Layer
+
 from keras.models import load_model
 
 
