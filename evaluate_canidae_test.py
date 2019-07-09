@@ -80,8 +80,11 @@ ImageGen = ImageDataGenerator(fill_mode='nearest',
 
 df_classes = pd.read_csv('groupings-csv/canidae_Imagenet.csv', usecols=['wnid'])
 classes = sorted([i for i in df_classes['wnid']])
+print (classes)
+whole_list = os.listdir(imagenet_test)
+oc_classes = sorted([i for i in whole_list if i not in classes])
 
-good_train_generator, steps = create_good_generator(ImageGen,
+in_context_generator, in_context_steps = create_good_generator(ImageGen,
                                                     imagenet_test,
                                                     batch_size=bs,
                                                     target_size = (img_rows, img_cols),
@@ -89,12 +92,12 @@ good_train_generator, steps = create_good_generator(ImageGen,
                                                     AlextNetAug=False, 
                                                     classes=classes)
 
-in_context_acc = model.evaluate_generator(good_train_generator, steps, verbose=1)
+in_context_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
 
 print(in_context_acc)
 print(model.metrics_names)
 print ('using model: ' + model_file+model1_name)
-
+"""
 whole_set_gen, whole_set_steps = create_good_generator(ImageGen,
                                                     imagenet_test,
                                                     batch_size=bs,
@@ -104,3 +107,14 @@ whole_set_gen, whole_set_steps = create_good_generator(ImageGen,
                                                     )
 whole_set_acc = model.evaluate_generator(whole_set_gen, whole_set_steps, verbose=1)
 print(whole_set_acc)
+"""
+out_context_generator, out_context_steps = create_good_generator(ImageGen,
+                                                    imagenet_test,
+                                                    batch_size=bs,
+                                                    target_size = (img_rows, img_cols),
+                                                    class_mode='sparse',
+                                                    AlextNetAug=False, 
+                                                    classes=oc_classes)
+
+out_context_acc = model.evaluate_generator(out_context_generator, out_context_steps, verbose=1)
+print (out_context_acc)
