@@ -92,3 +92,5 @@ good_train_generator, steps = create_good_generator(ImageGen,
 in_context_acc = model.evaluate_generator(good_train_generator, steps, verbose=1)
 
 print(in_context_acc)
+print(model.metrics_names)
+print ('using model: ' + model_file+model1_name)
