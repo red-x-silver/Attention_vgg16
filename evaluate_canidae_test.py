@@ -76,7 +76,6 @@ ImageGen = ImageDataGenerator(fill_mode='nearest',
                               rescale=None,
                               preprocessing_function=preprocess_input,
                               data_format="channels_last",
-                              use_multiprocessing=False
                               )
 
 df_classes = pd.read_csv('groupings-csv/canidae_Imagenet.csv', usecols=['wnid'])
