@@ -32,14 +32,14 @@ import pandas as pd
 bs = 64
 img_rows = 224
 img_cols = 224
-
+imagenet_test = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/val/'
 
 df_classes = pd.read_csv('groupings-csv/kitchen_Imagenet.csv', usecols=['wnid'])
 classes = sorted([i for i in df_classes['wnid']])
 whole_list = os.listdir(imagenet_test)
 oc_classes = sorted([i for i in whole_list if i not in classes])
 
-imagenet_test = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/val/'
+
 ImageGen = ImageDataGenerator(fill_mode='nearest',
                               horizontal_flip=True,
                               rescale=None,
