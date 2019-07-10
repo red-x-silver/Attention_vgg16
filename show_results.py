@@ -12,8 +12,8 @@ import pandas as pd
 canidae_path = 'single_att_results/canidae.csv'
 kitchen_path = 'single_att_results/kitchen.csv'
 
-df_canidae = pd.read_csv(canidae_path)
-df_kitchen = pd.read_csv(kitchen_path)
+df_canidae = pd.read_csv(canidae_path, index_col = 0)
+df_kitchen = pd.read_csv(kitchen_path, index_col = 0)
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
     print(df_canidae)
