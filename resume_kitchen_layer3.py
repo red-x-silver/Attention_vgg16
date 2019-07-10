@@ -67,8 +67,8 @@ good_validation_generator, steps_val = create_good_generator(ImageGen,
                                                              class_mode='sparse',
                                                              subset= 'validation',
                                                              classes=classes)
-
-file_name = 'layer' + str(3) + '-kitchen-model-CustomLayer.h5'
+layer_index = 3
+file_name = 'layer' + str(layer_index) + '-kitchen-model-CustomLayer.h5'
 model = load_model('kitchen/'+file_name, custom_objects={'SinglyConnected': SinglyConnected,
                                                         'CustomConstraint': CustomConstraint})
 
