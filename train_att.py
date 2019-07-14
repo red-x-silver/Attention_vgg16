@@ -134,7 +134,7 @@ for str_layer_index in layer_indice:
   custom_earlystopping = KO.RelativeEarlyStopping(monitor='val_loss',
                                                   min_perc_delta=0.001,  # perc means percentage
                                                   patience=patience,
-                                                  verbose=2,
+                                                  verbose=1,
                                                   mode='min'
                                                   )
                                                   
@@ -156,7 +156,5 @@ for str_layer_index in layer_indice:
           callbacks = callbacks, 
           validation_data=good_validation_generator, 
           validation_steps=steps_val,
-          max_queue_size=40,
-          workers=14,
           use_multiprocessing=True
           )
