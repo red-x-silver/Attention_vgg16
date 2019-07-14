@@ -44,7 +44,7 @@ parser = argparse.ArgumentParser(
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--class_name', type=str, default='kitchen')
 class_name = parser.parse_args()
-assert class_name in [ave, canidae, cloth, felidae, kitchen, land_trans], 'only support class from [ave, canidae, cloth, felidae, kitchen, land_trans]'
+assert class_name in ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans'], "only support class from ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']"
 
 #Magic numbers
 num_epochs = 100
