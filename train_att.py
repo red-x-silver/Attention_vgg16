@@ -156,6 +156,7 @@ for str_layer_index in layer_indice:
           callbacks = callbacks, 
           validation_data=good_validation_generator, 
           validation_steps=steps_val,
-          workers = 10,
+          max_queue_size=40,
+          workers = 14,
           use_multiprocessing=True
           )
