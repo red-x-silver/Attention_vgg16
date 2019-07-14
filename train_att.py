@@ -158,5 +158,5 @@ for str_layer_index in layer_indice:
           validation_steps=steps_val,
           max_queue_size=20,
           workers = 6,
-          use_multiprocessing=True
+          use_multiprocessing=False
           )
