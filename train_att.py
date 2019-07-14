@@ -17,7 +17,7 @@ matplotlib.use("Agg")
 import keras
 from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
-from keras.layers import Dense, Flatten, LocallyConnected1D, LocallyConnected2D, Reshape, Concatenate, Lambda
+from keras.layers import Dense, Flatten, Reshape, Concatenate, Lambda
 from keras import optimizers
 from keras.models import Sequential, Model
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
@@ -156,5 +156,6 @@ for str_layer_index in layer_indice:
           callbacks = callbacks, 
           validation_data=good_validation_generator, 
           validation_steps=steps_val,
+          workers = 10,
           use_multiprocessing=True
           )
