@@ -54,6 +54,7 @@ bs = 64
 img_rows = 224
 img_cols = 224
 layer_indice = ['21', '03', '06', '10', '14', '18', '20']  #positions to insert attention layer,use dtr here for writing file name properly(layer03 rather than layer3)
+patience = 2
 
 # Custom generator from Ken's codes
 imagenet_train = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/train/'
