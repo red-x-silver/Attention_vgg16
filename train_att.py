@@ -43,6 +43,8 @@ import argparse
 parser = argparse.ArgumentParser(
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--class_name', type=str, default='kitchen')
+args = parser.parse_args()
+class_name = args.class_name
 print (class_name)
 assert (class_name in ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']), "only support class from ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']"
 
