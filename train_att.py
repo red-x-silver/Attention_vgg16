@@ -51,7 +51,7 @@ num_epochs = 100
 bs = 64
 img_rows = 224
 img_cols = 224
-layer_indice = [21, 03, 06, 10, 14, 18, 20]  #positions to insert attention layer
+layer_indice = ['21', '03', '06', '10', '14', '18', '20']  #positions to insert attention layer,use dtr here for writing file name properly(layer03 rather than layer3)
 
 # Custom generator from Ken's codes
 imagenet_train = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/train/'
@@ -85,12 +85,15 @@ good_validation_generator, steps_val = create_good_generator(ImageGen,
 
 #Build the model
 
-def get_ATT_model(layer_index, class_name):
+def get_ATT_model(str_layer_index, class_name):
   '''
   The function is to insert an attention layer 
   between frozen_model.layers[layer_index] and frozen_model.layers[layer_index+1].
   frozen_model is set to be VGG16.
+  
+  Input str_layer_index is a string. This is to have proper model_file_name, e.g. layer03 rather than layer3
   '''
+  layer_index = int(str_layer_index)
   frozen_model = VGG16(weights = 'imagenet', include_top=True, input_shape = (img_rows, img_cols, 3))
   for layer in frozen_model.layers:
     layer.trainable = False
@@ -107,15 +110,15 @@ def get_ATT_model(layer_index, class_name):
   
   model.summary()
   
-  model_file_name = class_name+ '_models/layer' + str(layer_index) + '-' + class_name + '-model-CustomLayer.h5'
+  model_file_name = class_name+ '_models/layer' + str_layer_index + '-' + class_name + '-model-CustomLayer.h5'
 
   return model, model_file_name
 
 
 
-for layer_index in layer_indice:
-
-  model, file_name = get_ATT_model(layer_index, class_name)
+for str_layer_index in layer_indice:
+  
+  model, file_name = get_ATT_model(str_layer_index, class_name)
   model.compile(loss='sparse_categorical_crossentropy', 
                 optimizer='adam', 
                 metrics=['accuracy'])
@@ -140,7 +143,7 @@ for layer_index in layer_indice:
 
   
   
-  print('Now training model with layer index: '+ str(layer_index))
+  print('Now training model with layer index: '+ str_layer_index)
   
   model.fit_generator_custom(
           good_train_generator,
