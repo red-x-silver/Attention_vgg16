@@ -29,6 +29,9 @@ from custom_layer_constraints import CustomConstraint, SinglyConnected
 import numpy as np
 import pandas as pd
 
+#Forked from Ken's
+import keras_custom_objects as KO
+
 bs = 64
 img_rows = 224
 img_cols = 224
@@ -79,7 +82,7 @@ def auto_evaluate(model_file):
   model_path_list = os.listdir(model_file)
   for i in range(len(model_path_list)):
     model_path = model_path_list[i]
-    model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected})
+    model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
     ic_loss, ic_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
     oc_loss, oc_acc = model.evaluate_generator(out_context_generator, out_context_steps, verbose=1)
     whole_loss, whole_acc = model.evaluate_generator(whole_set_gen, whole_set_steps, verbose=1)
