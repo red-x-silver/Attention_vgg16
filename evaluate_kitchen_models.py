@@ -90,13 +90,13 @@ def auto_evaluate(model_file):
                       'ic_acc': ic_acc, 
                       'oc_acc': oc_acc, 
                       'whole_acc': whole_acc}
-
+  eval_df.sort_values(by=['model_name'], inplace=True)
   return eval_df
 
 
 
 
-model_file = 'kitchen/'
+model_file = 'kitchen_models/'
 eval_df = auto_evaluate(model_file)
 print (eval_df)
 eval_df.to_csv('single_att_results/kitchen.csv')
