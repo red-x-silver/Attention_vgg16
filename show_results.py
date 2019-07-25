@@ -8,13 +8,16 @@ Original file is located at
 """
 
 import pandas as pd
+import os
 
-canidae_path = 'single_att_results/canidae.csv'
-kitchen_path = 'single_att_results/kitchen.csv'
 
-df_canidae = pd.read_csv(canidae_path, index_col = 0)
-df_kitchen = pd.read_csv(kitchen_path, index_col = 0)
+file_name = 'single_att_results/'
+result_path_list = os.listdir(file_name)
 
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    print(df_canidae)
-    print(df_kitchen)
+for path in result_path_list:
+    df_path = file_name + path
+    df = pd.read_csv(df_path, index_col = 0)
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None): 
+        print(df)
+
+
