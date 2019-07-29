@@ -9,7 +9,10 @@ Original file is located at
 
 import pandas as pd
 import os
-
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+import matplotlib
+matplotlib.use("Agg")
 
 file_name = 'single_att_results/'
 result_path_list = os.listdir(file_name)
@@ -19,5 +22,10 @@ for path in result_path_list:
     df = pd.read_csv(df_path, index_col = 0)
     with pd.option_context('display.max_rows', None, 'display.max_columns', None): 
         print(df)
+        df.set_index(['model_name'], inplace=True)
+        df['ic_acc'].plot(title = path, label = 'in-context acc')
+        df['oc_acc'].plot(title = path, label = 'out-context acc')
+        plt.legend()
+        plt.show()
 
 
