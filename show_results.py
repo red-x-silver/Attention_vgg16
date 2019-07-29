@@ -13,6 +13,7 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import matplotlib
 matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 file_name = 'single_att_results/'
 result_path_list = os.listdir(file_name)
