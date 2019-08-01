@@ -94,6 +94,9 @@ for i in range(len(classes_list)):
     ic_loss, ic_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
     oc_loss, oc_acc = model.evaluate_generator(out_context_generator, out_context_steps, verbose=1)
     
+    baseline_df.loc[i] = {'class_name': class_name, 
+                      'ic_acc_baseline': ic_acc, 
+                      'oc_acc_baseline': oc_acc}
 
 save_path = 'single_att_results/' + 'baseline.csv'
 baseline_df.to_csv(save_path)    
