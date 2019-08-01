@@ -47,7 +47,12 @@ classes_list = ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']
 
 
 imagenet_test = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/val/'
+
 model = VGG16(weights = 'imagenet', include_top=True, input_shape = (img_rows, img_cols, 3))
+model.compile(loss='sparse_categorical_crossentropy', 
+                optimizer='adam', 
+                metrics=['accuracy'])
+
 baseline_df = pd.DataFrame(columns = ['class_name', 'ic_acc_baseline', 'oc_acc_baseline'])
 for i in range(len(classes_list)):
     class_name = classes_list[i]
