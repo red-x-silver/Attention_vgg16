@@ -32,7 +32,13 @@ import h5py
 import random
 import math
 
-num_epochs = 100
+from custom_layer_constraints import CustomConstraint, SinglyConnected
+
+#Forked from Ken's
+import keras_custom_objects as KO
+from custom_generator import create_good_generator
+
+
 bs = 64
 img_rows = 224
 img_cols = 224
