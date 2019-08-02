@@ -38,7 +38,7 @@ class SinglyConnected(Layer):
         
         self.kernel = self.add_weight(name='kernel', 
                                       shape=input_shape[1:],
-                                      initializer='uniform',
+                                      initializer='ones',
                                       constraint=self.kernel_constraint,
                                       trainable=True)
         super(SinglyConnected, self).build(input_shape)  # Be sure to call this at the end
