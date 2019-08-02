@@ -113,7 +113,7 @@ def get_ATT_model(str_layer_index, class_name):
   
   model.summary()
   
-  model_file_name = class_name+ '_models/layer' + str_layer_index + '-' + class_name + '-model-CustomLayer.h5'
+  model_file_name = class_name+ '_models/layer' + str_layer_index + '-' + class_name + '-model.h5'
 
   return model, model_file_name
 
