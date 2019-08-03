@@ -112,5 +112,5 @@ def auto_evaluate(model_file):
 model_file = class_name + '_models/'
 eval_df = auto_evaluate(model_file)
 print (eval_df)
-save_path = 'single_att_results/' + class_name + '.csv'
+save_path = 'results_df/' + class_name + '.csv'
 eval_df.to_csv(save_path)
