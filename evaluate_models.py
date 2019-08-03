@@ -95,14 +95,14 @@ def auto_evaluate(model_file):
     model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
     ic_loss, ic_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
     oc_loss, oc_acc = model.evaluate_generator(out_context_generator, out_context_steps, verbose=1)
-    whole_loss, whole_acc = model.evaluate_generator(whole_set_gen, whole_set_steps, verbose=1)
+    #whole_loss, whole_acc = model.evaluate_generator(whole_set_gen, whole_set_steps, verbose=1)
     eval_df.loc[i] = {'model_name': model_path[:-3], 
                       'ic_loss': ic_loss, 
                       'oc_loss': oc_loss, 
-                      'whole_loss': whole_loss, 
+                      #'whole_loss': whole_loss, 
                       'ic_acc': ic_acc, 
                       'oc_acc': oc_acc, 
-                      'whole_acc': whole_acc}
+                      #'whole_acc': whole_acc}
   eval_df.sort_values(by=['model_name'], inplace=True)
   return eval_df
 
