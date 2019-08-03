@@ -101,7 +101,7 @@ def auto_evaluate(model_file):
                       'oc_loss': oc_loss, 
                       #'whole_loss': whole_loss, 
                       'ic_acc': ic_acc, 
-                      'oc_acc': oc_acc, 
+                      'oc_acc': oc_acc
                       #'whole_acc': whole_acc
                      }
   eval_df.sort_values(by=['model_name'], inplace=True)
