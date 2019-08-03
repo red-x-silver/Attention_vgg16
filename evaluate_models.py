@@ -87,7 +87,8 @@ whole_set_gen, whole_set_steps = create_good_generator(ImageGen,
                                                     )
 
 def auto_evaluate(model_file):
-  eval_df = pd.DataFrame(columns = ['model_name', 'ic_loss', 'oc_loss', 'whole_loss', 'ic_acc', 'oc_acc', 'whole_acc'])
+  #eval_df = pd.DataFrame(columns = ['model_name', 'ic_loss', 'oc_loss', 'whole_loss', 'ic_acc', 'oc_acc', 'whole_acc'])
+  eval_df = pd.DataFrame(columns = ['model_name', 'ic_loss', 'oc_loss', 'ic_acc', 'oc_acc'])
   model_path_list = os.listdir(model_file)
   model_path_list = [x for x in model_path_list if x[-4]=='l'] #filter out models with names as 'xxx-CustomLayer.h5', only use models with 'xxx-model.h5'
   for i in range(len(model_path_list)):
