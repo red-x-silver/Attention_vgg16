@@ -40,8 +40,9 @@ def get_att_weights(model_file):
     model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
     for layer in model.layers:
       print (layer.name)
-      if layer.name[:5]=='singly':
-        att_name = layer.name
+      layer_name = layer.name
+      if layer_name[:5]=='singly':
+        att_name = layer_name
         break
     att_weights = np.array(model.get_layer(att_name).get_weights())
     save_path = 'att_weights/' + model_path[:-8]+'weights.npy'
