@@ -39,7 +39,7 @@ def get_att_weights(model_file):
     model_path = model_path_list[i]
     model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
     att_weights = np.array(model.get_layer('singly_connected_1').get_weights())
-    save_path = '/att_weights/' + model_path[:-8]+'weights.npy'
+    save_path = 'att_weights/' + model_path[:-8]+'weights.npy'
     print ('weights saves as' + save_path)
     np.save(save_path,att_weights)
   return None
