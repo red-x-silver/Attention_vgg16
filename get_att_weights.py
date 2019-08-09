@@ -41,7 +41,7 @@ def get_att_weights(model_file):
     for layer in model.layers:
       print (layer.name)
       layer_name = layer.name
-      if layer_name[:5]=='singly':
+      if layer_name[:6]=='singly':
         att_name = layer_name
         break
     att_weights = np.array(model.get_layer(att_name).get_weights())
