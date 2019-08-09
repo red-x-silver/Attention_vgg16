@@ -52,7 +52,7 @@ def get_att_weights(model_file):
         break
     att_weights = np.array(model.get_layer(att_name).get_weights())
     save_path = 'att_weights/' + model_path[:-8]+'weights.npy'
-    print ('weights saves as' + save_path)
+    print ('weights saves as ' + save_path)
     np.save(save_path,att_weights)
   return None
 
