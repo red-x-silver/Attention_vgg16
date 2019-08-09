@@ -31,6 +31,14 @@ import matplotlib.pyplot as plt
 #Forked from Ken's
 import keras_custom_objects as KO
 
+import argparse
+parser = argparse.ArgumentParser(
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--class_name', type=str, default='kitchen')
+args = parser.parse_args()
+class_name = args.class_name
+assert class_name in ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans'], "only support class from ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']"
+
 
 def get_att_weights(model_file):
   model_path_list = os.listdir(model_file)
@@ -39,10 +47,8 @@ def get_att_weights(model_file):
     model_path = model_path_list[i]
     model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
     for layer in model.layers:
-      print (layer.name)
-      layer_name = layer.name
-      if layer_name[:6]=='singly':
-        att_name = layer_name
+      if layer.name[:6]=='singly':
+        att_name = layer.name
         break
     att_weights = np.array(model.get_layer(att_name).get_weights())
     save_path = 'att_weights/' + model_path[:-8]+'weights.npy'
@@ -50,6 +56,6 @@ def get_att_weights(model_file):
     np.save(save_path,att_weights)
   return None
 
-for class_name in ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']:
-    model_file = class_name + '_models/'
-    get_att_weights(model_file)
+
+model_file = class_name + '_models/'
+get_att_weights(model_file)
