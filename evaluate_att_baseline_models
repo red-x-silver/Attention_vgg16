@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Evaluate baseline models train with a singly-connected layer inserted at certain position.
+
+python evaluate_att_baseline_models --position 06
+
+@author: yixiaowan
+"""
+
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+import matplotlib
+matplotlib.use("Agg")
+
+import keras
+from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
+from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
+from keras.layers import Dense, Flatten, LocallyConnected1D, LocallyConnected2D, Reshape, Concatenate, Lambda
+from keras import optimizers
+from keras.models import Sequential, Model
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras import backend as K
+from keras.layers import Layer
+
+from keras.models import load_model
+from custom_generator import create_good_generator
+from custom_layer_constraints import CustomConstraint, SinglyConnected
+import numpy as np
+import pandas as pd
+
+#Forked from Ken's
+import keras_custom_objects as KO
+
+
+import argparse
+parser = argparse.ArgumentParser(
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--position', type=str, default='06')
+args = parser.parse_args()
+position = args.position
+print (position)
+assert (position in ['03', '06', '10', '14', '18', '20', '21']), "only support positions from ['03', '06', '10', '14', '18', '20', '21']"
+
+bs = 64
+img_rows = 224
+img_cols = 224
+imagenet_test = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/val/'
+classes_list = ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']
+
+#Load the model
+model_file = 'baseline_models/'
+model_path = 'baseline_model_layer'+position+'.h5'
+model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
+
+
+
+#Evaluate and save the results in baseline_df
+baseline_df = pd.DataFrame(columns = ['class_name', 'ic_acc_baseline', 'oc_acc_baseline'])
+for i in range(len(classes_list)):
+    class_name = classes_list[i]
+    class_csv_path = 'groupings-csv/' + class_name + '_Imagenet.csv'
+    df_classes = pd.read_csv(class_csv_path, usecols=['wnid'])
+
+    classes = sorted([i for i in df_classes['wnid']])
+    whole_list = os.listdir(imagenet_test)
+    oc_classes = sorted([i for i in whole_list if i not in classes])
+
+
+    ImageGen = ImageDataGenerator(fill_mode='nearest',
+                              horizontal_flip=False,
+                              rescale=None,
+                              preprocessing_function=preprocess_input,
+                              data_format="channels_last",
+                              )
+
+
+    in_context_generator, in_context_steps = create_good_generator(ImageGen,
+                                                    imagenet_test,
+                                                    batch_size=bs,
+                                                    target_size = (img_rows, img_cols),
+                                                    class_mode='sparse',
+                                                    AlextNetAug=False, 
+                                                    classes=classes)
+
+
+    out_context_generator, out_context_steps = create_good_generator(ImageGen,
+                                                    imagenet_test,
+                                                    batch_size=bs,
+                                                    target_size = (img_rows, img_cols),
+                                                    class_mode='sparse',
+                                                    AlextNetAug=False, 
+                                                    classes=oc_classes)
+
+
+
+    ic_loss, ic_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
+    oc_loss, oc_acc = model.evaluate_generator(out_context_generator, out_context_steps, verbose=1)
+    
+    baseline_df.loc[i] = {'class_name': class_name, 
+                      'ic_acc_baseline': ic_acc, 
+                      'oc_acc_baseline': oc_acc}
+
+
+print (baseline_df)
+save_path = 'att_baseline/baseline_att_layer' + position + '.csv'
+baseline_df.to_csv(save_path) 
+
+
