@@ -44,8 +44,8 @@ for ctgry in ctgry_list:
         n_img = len(os.listdir(class_path))
         nimg_list.append(n_img)
         #df_classes[df_classes['wnid'] == class_wid]['number_of_img'] = n_img
-        acc = df_classes[df_classes['wnid']== class_wid]['base_accuracy'].values[0]
-        acc.append(acc)
+        ac = df_classes[df_classes['wnid']== class_wid]['base_accuracy'].values[0]
+        acc.append(ac)
     acc = np.array(acc)
     nimg_list = np.array(nimg_list)
     #print ( weighted_acc)
