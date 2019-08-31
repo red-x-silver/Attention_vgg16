@@ -40,9 +40,9 @@ for ctgry in ctgry_list:
     print (total_img)
     weighted_acc = [i/total_img for i in weighted_acc]
 
-    print ('The total number of images for ' + ctgry + ':' + total_img)
-    print ('The mean of acc for ' + ctgry + ':' + weighted_acc.sum())
-    print ('The std of acc for ' + ctgry + ':' + total_img.std())
+    print ('The total number of images for ' + ctgry + ':' + str(total_img))
+    print ('The mean of acc for ' + ctgry + ':' + str(weighted_acc.sum()))
+    print ('The std of acc for ' + ctgry + ':' + str(weighted_acc.std()))
     
     
     
