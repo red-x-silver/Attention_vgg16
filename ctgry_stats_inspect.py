@@ -35,10 +35,10 @@ for ctgry in ctgry_list:
         weighted_acc.append(acc*n_img)
     weighted_acc = np.array(weighted_acc)
     nimg_list = np.array(nimg_list)
-    print ( weighted_acc)
+    #print ( weighted_acc)
     total_img = nimg_list.sum()  
-    print (total_img)
-    weighted_acc = [i/total_img for i in weighted_acc]
+    #print (total_img)
+    weighted_acc = weighted_acc/total_img
 
     print ('The total number of images for ' + ctgry + ':' + str(total_img))
     print ('The mean of acc for ' + ctgry + ':' + str(weighted_acc.sum()))
