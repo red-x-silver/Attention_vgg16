@@ -25,9 +25,9 @@ def weighted_avg_and_std(values, weights):
 
     values, weights -- Numpy ndarrays with the same shape.
     """
-    average = numpy.average(values, weights=weights)
+    average = np.average(values, weights=weights)
     # Fast and numerically precise:
-    var = numpy.average((values-average)**2, weights=weights)
+    var = np.average((values-average)**2, weights=weights)
     variance = var * len(weights)/(len(weights) - 1)
     return (average, math.sqrt(variance))
 
