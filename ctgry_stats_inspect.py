@@ -22,6 +22,7 @@ imagenet_train = '/mnt/fast-data16/datasets/ILSVRC/2012/clsloc/train/'
 for ctgry in ctgry_list:
     class_csv_path = 'groupings-csv/' + ctgry + '_Imagenet.csv'
     df_classes = pd.read_csv(class_csv_path)
+    df_classes["number_of_img"] = ""
     classes = [i for i in df_classes['wnid']]
     weighted_acc = []
     for class_wid in classes:
