@@ -31,8 +31,9 @@ for ctgry in ctgry_list:
         df_classes[df_classes['wnid'] == class_wid]['number_of_img'] = n_img
         acc = df_classes[df_classes['wnid']== class_wid]['base_accuracy'].values[0]
         weighted_acc.append(acc*n_img)
-    total_img = df_classes['number_of_img'].sum()    
-    weighted_acc = np.array(weighted_acc)/total_img
+    total_img = df_classes['number_of_img'].sum()  
+    weighted_acc = [i/total_img for i in weighted_acc]
+    weighted_acc = np.array(weighted_acc)
     print ('The total number of images for ' + ctgry + ':' + total_img)
     print ('The mean of acc for ' + ctgry + ':' + weighted_acc.sum())
     print ('The std of acc for ' + ctgry + ':' + total_img.std())
