@@ -72,6 +72,7 @@ model_path_list = os.listdir(model_file)
 for i in range(len(model_path_list)):
     model_path = model_path_list[i]
     model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
+    cross_df.loc[i] = 0
     cross_df['model_name'].iloc[i] = model_path[:-3]
     for class_name in ctgry_list:
         if class_name != ctgry:
