@@ -54,7 +54,7 @@ ctgry_list = ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']
 performance_dict = {}
 
 
-for crgry in ctgry_list:
+for ctgry in ctgry_list:
     model_file = ctgry + '_models/'
     model_path_list = os.listdir(model_file)
     performance = []
