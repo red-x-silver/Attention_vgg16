@@ -36,6 +36,15 @@ import json
 import keras_custom_objects as KO
 
 
+import argparse
+parser = argparse.ArgumentParser(
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--class_name', type=str, default='kitchen')
+args = parser.parse_args()
+ctgry = args.class_name
+assert ctgry in ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans'], "only support class from ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']"
+
+
 bs = 64
 img_rows = 224
 img_cols = 224
@@ -53,36 +62,36 @@ ImageGen = ImageDataGenerator(fill_mode='nearest',
 ctgry_list = ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']
 performance_dict = {}
 
+model_file = ctgry + '_models/'
+model_path_list = os.listdir(model_file)
+performance_dict = {}
+performance = []
+for i in range(len(model_path_list)):
+    model_path = model_path_list[i]
+    model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
 
-for ctgry in ctgry_list:
-    model_file = ctgry + '_models/'
-    model_path_list = os.listdir(model_file)
-    performance = []
-    for i in range(len(model_path_list)):
-        model_path = model_path_list[i]
-        model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
-
-        for class_name in ctgry_list:
-            if class_name != ctgry:
+    for class_name in ctgry_list:
+        if class_name != ctgry:
                 
                 
-                class_csv_path = 'groupings-csv/' + class_name + '_Imagenet.csv'
-                df_classes = pd.read_csv(class_csv_path, usecols=['wnid'])
-                classes = sorted([i for i in df_classes['wnid']])
+            class_csv_path = 'groupings-csv/' + class_name + '_Imagenet.csv'
+            df_classes = pd.read_csv(class_csv_path, usecols=['wnid'])
+            classes = sorted([i for i in df_classes['wnid']])
 
-                in_context_generator, in_context_steps = create_good_generator(ImageGen,
+            in_context_generator, in_context_steps = create_good_generator(ImageGen,
                                                                            imagenet_test,
                                                                            batch_size=bs,
                                                                            target_size = (img_rows, img_cols),
                                                                            class_mode='sparse',
                                                                            AlextNetAug=False, 
                                                                            classes=classes)
-                ic_loss, ic_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
-                performance.append([model_path[:-3], class_name, ic_acc])
+            ic_loss, ic_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
+            performance.append([model_path[:-3], class_name, ic_acc])
                 
     
     performance_dict[ctgry] = performance
-    
+ 
+print (performance)
 print (performance_dict)
 
 with open('cross_evaluation.json', 'w') as fp:
