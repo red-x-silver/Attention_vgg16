@@ -58,18 +58,21 @@ ImageGen = ImageDataGenerator(fill_mode='nearest',
                               )
 
 
+col_name_list = ['model_name','ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans' ]
+col_name_list.remove(ctgry)
 
 ctgry_list = ['ave', 'canidae', 'cloth', 'felidae', 'kitchen', 'land_trans']
-performance_dict = {}
+
+cross_df = pd.DataFrame(columns = col_name_list)
 
 model_file = ctgry + '_models/'
 model_path_list = os.listdir(model_file)
-performance_dict = {}
-performance = []
+
+
 for i in range(len(model_path_list)):
     model_path = model_path_list[i]
     model = load_model(model_file+model_path, custom_objects={'SinglyConnected': SinglyConnected, 'CustomModel': KO.CustomModel})
-
+    cross_df['model_name'].iloc[i] = model_path[:-3]
     for class_name in ctgry_list:
         if class_name != ctgry:
                 
@@ -86,15 +89,11 @@ for i in range(len(model_path_list)):
                                                                            AlextNetAug=False, 
                                                                            classes=classes)
             ic_loss, ic_acc = model.evaluate_generator(in_context_generator, in_context_steps, verbose=1)
-            performance.append([model_path[:-3], class_name, ic_acc])
+            cross_df[class_name].iloc[i] = ic_acc
                 
-    
-    performance_dict[ctgry] = performance
- 
-print (performance)
-print (performance_dict)
 
-with open('cross_evaluation.json', 'w') as fp:
-    json.dump(performance_dict, fp)
-            
+print (cross_df)
+save_path = 'single_att_results/cross_evaluate_' + class_name + '.csv'
+eval_df.to_csv(save_path)
+           
 
