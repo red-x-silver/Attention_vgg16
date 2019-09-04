@@ -55,7 +55,7 @@ performance_dict = {}
 
 
 for crgry in ctgry_list:
-    model_file = vtgry + '_models/'
+    model_file = ctgry + '_models/'
     model_path_list = os.listdir(model_file)
     performance = []
     for i in range(len(model_path_list)):
