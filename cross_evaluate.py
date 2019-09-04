@@ -94,6 +94,6 @@ for i in range(len(model_path_list)):
 
 print (cross_df)
 save_path = 'single_att_results/cross_evaluate_' + class_name + '.csv'
-eval_df.to_csv(save_path)
+cross_df.to_csv(save_path)
            
 
